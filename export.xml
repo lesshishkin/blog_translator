@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns="http://purl.org/rss/1.0/modules/content/" xmlns:excerpt="http://wordpress.org/export/1.2/excerpt/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:wp="http://wordpress.org/export/1.2/" version="2.0">
+  <channel>
+    <title>Your Blog Title</title>
+    <link>http://yourblog.com</link>
+    <description>Description of your blog</description>
+    <language>en-US</language>
+    <wp:wxr_version>1.2</wp:wxr_version>
+    <item>
+      <title>First Post</title>
+      <link>http://yourblog.com/first-post</link>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      <dc:creator>admin</dc:creator>
+      <encoded><![CDATA[<p>This is the content of the first post.</p>]]></encoded>
+      <excerpt:encoded><![CDATA[This is the excerpt of the first post.]]></excerpt:encoded>
+      <wp:post_id>1</wp:post_id>
+      <wp:post_date>2021-01-01 00:00:00</wp:post_date>
+      <wp:post_date_gmt>2021-01-01 00:00:00</wp:post_date_gmt>
+      <wp:comment_status>open</wp:comment_status>
+      <wp:ping_status>open</wp:ping_status>
+      <wp:status>publish</wp:status>
+      <wp:post_type>post</wp:post_type>
+    </item>
+  </channel>
+</rss>
