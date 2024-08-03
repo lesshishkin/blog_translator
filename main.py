@@ -4,8 +4,7 @@ from prompts import url_translate_prompt, content_translate_prompt
 from dotenv import load_dotenv
 import os
 from pprint import pprint
-
-langs = ['ru', 'es']
+from configs import config
 
 
 def gpt_translate(post_data, language):
@@ -25,11 +24,16 @@ if __name__ == '__main__':
 
     translations = []
 
-    # for lang in langs:
+    # for lang in config.langs:
     #     translated_data = gpt_translate(original_post_data, lang)
     #     # todo links localization
     #     # translated_data = localize_links(translated_data, lang)
     #     translations.append(translated_data)
+    #   тест перевода:
+    #       переводим
+    #       переводи назад
+    #       считаем BLEU
+    #       подаем в гпт с промптом сравнить и выявить несоответствия
 
     translations.append(original_post_data)
     output_path = 'output_' + post_path
