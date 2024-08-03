@@ -5,10 +5,51 @@ from dotenv import load_dotenv
 import os
 from pprint import pprint
 from configs import config
+from openai import OpenAI
+import transliterate
+
+load_dotenv('.env')
+API_KEY = os.environ['GPT_API_KEY']
 
 
-def gpt_translate(post_data, language):
-    pass
+def translate_post(post_data, language):
+    prompt = f"You are a translator. Translate the following text to {config.langs[language]}."
+    text = post_data['title']
+    translated_title = ask_gpt(prompt, text)
+
+    if post_data['excerpt'] is not None:
+        prompt = f"You are a translator. Translate the following text to {config.langs[language]}."
+        text = post_data['excerpt']
+        translated_excerpt = ask_gpt(prompt, text)
+    else:
+        translated_excerpt = None
+
+    prompt = (f"You are a translator. Translate the following text to {config.langs[language]} while preserving any "
+              f"HTML tags and other markup exactly as they are in the original text:")
+    text = post_data['content']
+    translated_content = ask_gpt(prompt, text)
+
+    prompt = (f"You are a translator. Translate the following URL slug to {config.langs[language]}, and return the "
+              f"translation in Latin characters (transliteration), keeping hyphens between words:")
+    text = post_data['link'].split('/')[-1]
+    translated_slug = ask_gpt(prompt, text)
+
+    translated_url = config.blog_url + translated_slug
+
+    return translated_title, translated_excerpt, translated_content, translated_slug, translated_url
+
+
+def ask_gpt(prompt, text):
+    client = OpenAI(api_key=API_KEY)
+    translation = client.chat.completions.create(
+        model="gpt-4o",
+        messages=[
+            {"role": "system", "content": prompt},
+            {"role": "user", "content": text}
+        ]
+    )
+
+    return translation['choices'][0]['message']['content']
 
 
 def localize_links(post_data, language):
@@ -16,46 +57,44 @@ def localize_links(post_data, language):
 
 
 if __name__ == '__main__':
-    load_dotenv('.env')
-    api_key = os.environ['GPT_API_KEY']
-
     post_path = 'getitcom.WordPress.2024-08-01.xml'
     original_post_data = parse_xml(post_path)
 
     translations = []
 
-    # for lang in config.langs:
-    #     translated_data = gpt_translate(original_post_data, lang)
-    #     # todo links localization
-    #     # translated_data = localize_links(translated_data, lang)
-    #     translations.append(translated_data)
+    for lang in config.langs.keys():
+        title, excerpt, content, slug, link = translate_post(original_post_data, lang)
+        # todo links localization
+        # translated_data = localize_links(content, lang)
+
+        # todo разобраться со всеми полями
+        post = {
+            'title': title,
+            'link': link,
+            'pubDate': original_post_data['pubDate'],
+            'creator': original_post_data['creator'],
+            # 'guid': guid,
+            'content': content,
+            'excerpt': excerpt,
+            # 'post_id': post_id,
+            'post_date': original_post_data['post_date'], #CDATA
+            'post_date_gmt': original_post_data['post_date_gmt'], #CDATA
+            'post_name': slug,  #CDATA
+            # 'status': status,
+            # 'post_parent': post_parent,
+            # 'menu_order': menu_order,
+            'post_type': original_post_data['post_type'],   #CDATA
+            # 'is_sticky': is_sticky,
+            # 'category': category_nicename,
+        }
+
+        translations.append(post)
+
     #   тест перевода:
     #       переводим
     #       переводи назад
     #       считаем BLEU
     #       подаем в гпт с промптом сравнить и выявить несоответствия
 
-    translations.append(original_post_data)
     output_path = 'output_' + post_path
-    # pprint(original_post_data)
     create_wxr(translations, output_path)
-
-    # Пример использования
-    posts = [
-        {
-            "title": "First Post",
-            "link": "http://yourblog.com/first-post",
-            "pubDate": "Fri, 01 Jan 2021 00:00:00 +0000",
-            "author": "admin",
-            "content": "<p>This is the content of the first post.</p>",
-            "excerpt": "This is the excerpt of the first post.",
-            "id": 1,
-            "post_date": "2021-01-01 00:00:00",
-            "post_date_gmt": "2021-01-01 00:00:00",
-            "status": "publish",
-            "post_type": "post",
-        },
-        # Добавьте больше постов, если необходимо
-    ]
-
-    # create_wxr(posts, 'output.xml')

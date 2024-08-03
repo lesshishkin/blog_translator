@@ -27,12 +27,12 @@ def create_wxr(posts, output_file_name):
         content.text = etree.CDATA(post["content"])
         excerpt = etree.SubElement(item, QName("http://wordpress.org/export/1.2/excerpt/", "encoded"))
         excerpt.text = etree.CDATA(post.get("excerpt", ""))
-        etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "post_id")).text = str(post["post_id"])
+        # etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "post_id")).text = str(post["post_id"])
         etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "post_date")).text = post["post_date"]
         etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "post_date_gmt")).text = post["post_date_gmt"]
-        etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "comment_status")).text = post.get("comment_status", "open")
-        etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "ping_status")).text = post.get("ping_status", "open")
-        etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "status")).text = post["status"]
+        # etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "comment_status")).text = post.get("comment_status", "open")
+        # etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "ping_status")).text = post.get("ping_status", "open")
+        # etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "status")).text = post["status"]
         etree.SubElement(item, QName("http://wordpress.org/export/1.2/", "post_type")).text = post.get("post_type", "post")
 
     tree = etree.ElementTree(rss)
