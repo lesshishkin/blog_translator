@@ -1,7 +1,8 @@
 from lxml import etree
 from lxml.etree import QName
 
-def create_wxr(posts):
+
+def create_wxr(posts, output_path):
     # Создаем корневой элемент
     rss = etree.Element("rss", version="2.0", nsmap={
         None: "http://purl.org/rss/1.0/modules/content/",
@@ -42,23 +43,3 @@ def create_wxr(posts):
     tree = etree.ElementTree(rss)
     with open("export.xml", "wb") as f:
         tree.write(f, encoding="UTF-8", xml_declaration=True, pretty_print=True)
-
-# Пример использования
-posts = [
-    {
-        "title": "First Post",
-        "link": "http://yourblog.com/first-post",
-        "pubDate": "Fri, 01 Jan 2021 00:00:00 +0000",
-        "author": "admin",
-        "content": "<p>This is the content of the first post.</p>",
-        "excerpt": "This is the excerpt of the first post.",
-        "id": 1,
-        "post_date": "2021-01-01 00:00:00",
-        "post_date_gmt": "2021-01-01 00:00:00",
-        "status": "publish",
-        "post_type": "post",
-    },
-    # Добавьте больше постов, если необходимо
-]
-
-create_wxr(posts)

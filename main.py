@@ -1,44 +1,33 @@
-import xml.etree.ElementTree as ET
-import lxml
+from create_wxr import create_wxr
+from parse_xml import parse_xml
+from prompts import url_translate_prompt, content_translate_prompt
+from dotenv import load_dotenv
+import os
 
-# Определение пространств имен
-namespaces = {
-    'content': 'http://purl.org/rss/1.0/modules/content/',
-    'excerpt': 'http://wordpress.org/export/1.2/excerpt/',
-    'wfw': 'http://wellformedweb.org/CommentAPI/',
-    'dc': 'http://purl.org/dc/elements/1.1/',
-    'wp': 'http://wordpress.org/export/1.2/'
-}
 
-# Открытие и парсинг XML файла
-tree = ET.parse('getitcom.WordPress.2024-08-01.xml')
-root = tree.getroot()
+if __name__ == '__main__':
+    load_dotenv('.env')
+    api_key = os.environ['GPT_API_KEY']
 
-# Регистрация пространств имен
-for prefix, uri in namespaces.items():
-    ET.register_namespace(prefix, uri)
+    post_path = ''
+    original_post_data = parse_xml(post_path)
 
-# Замена содержимого поста
-for item in root.findall('./channel/item'):
-    title = item.find('title')
-    if title is not None and title.text == 'Expanding the Reach: .it.com Domains Can Now Be Listed on the Dan.com Marketplace':
-        content = item.find('content:encoded', namespaces)
-        if content is not None:
-            content.text = '''<![CDATA[<!-- wp:paragraph -->
-<p>Сегодня компания it.com Domains с радостью сообщает, что ее домены принимаются для размещения на Dan.com, ведущем маркетплейсе доменов, принадлежащем GoDaddy. Это расширение дополняет начальную <a href="https://get.it.com/blog/godaddy-now-offers-it-com-domains/">доступность доменов .it.com через GoDaddy</a>, предоставляя бизнесу и предпринимателям дополнительные упрощенные возможности доступа к доменам .it.com через безопасную и удобную платформу aftermarket доменов Dan.com.</p>
-<!-- /wp:paragraph -->
+    # Пример использования
+    posts = [
+        {
+            "title": "First Post",
+            "link": "http://yourblog.com/first-post",
+            "pubDate": "Fri, 01 Jan 2021 00:00:00 +0000",
+            "author": "admin",
+            "content": "<p>This is the content of the first post.</p>",
+            "excerpt": "This is the excerpt of the first post.",
+            "id": 1,
+            "post_date": "2021-01-01 00:00:00",
+            "post_date_gmt": "2021-01-01 00:00:00",
+            "status": "publish",
+            "post_type": "post",
+        },
+        # Добавьте больше постов, если необходимо
+    ]
 
-<!-- wp:paragraph -->
-<p>Dan.com упрощает покупку, продажу и аренду доменных имен, предлагая бесшовный опыт для пользователей. Важность Dan.com на рынке доменов обусловлена его свежим подходом к продаже доменов, акцентом на прозрачности и удобстве использования. Инновационные функции платформы, такие как мгновенные передачи доменов для определенных ccTLD и SEO-оптимизированные целевые страницы, сделали его значимым игроком на вторичном рынке доменов.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Доступность доменов it.com на Dan.com представляет собой значительную возможность для бизнеса всех видов и отраслей создать сильную онлайн-идентичность. С доменами .it.com компании могут расширить свои возможности за пределы традиционных gTLD, выйти на мировые рынки и повысить узнаваемость бренда в IT-сообществе. Более того, поскольку домены .it.com работают в рамках установленной структуры .com, они предлагают первоначальное доверие и бесшовную интеграцию.</p>
-<!-- /wp:paragraph -->
-
-<!-- wp:paragraph -->
-<p>Делая домены .it.com доступными через множество платформ, мы позволяем большему числу компаний стимулировать инновации и успех в цифровом пространстве. Это сотрудничество с Dan.com дополняет предложение GoDaddy, создавая еще больше возможностей для бизнеса, стремящегося процветать в современном рыночном пространстве.</p>
-<!-- /wp:paragraph -->]]>'''
-
-# Сохранение изменений в новый файл
-tree.write('translated_getitcom.WordPress.2024-08-01.xml', encoding='utf-8', xml_declaration=True)
+    create_wxr(posts, 'output.xml')
