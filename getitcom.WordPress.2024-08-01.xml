@@ -35,10 +35,10 @@
 	<wp:base_site_url>https://get.it.com/blog</wp:base_site_url>
 	<wp:base_blog_url>https://get.it.com/blog</wp:base_blog_url>
 
-		<wp:author><wp:author_id>6</wp:author_id><wp:author_login><![CDATA[theitcomdomainsteam]]></wp:author_login><wp:author_email><![CDATA[rukhlov@it.com]]></wp:author_email><wp:author_display_name><![CDATA[The it.com Domains Team]]></wp:author_display_name><wp:author_first_name><![CDATA[The it.com]]></wp:author_first_name><wp:author_last_name><![CDATA[Domains Team]]></wp:author_last_name></wp:author>
+	<wp:author><wp:author_id>6</wp:author_id><wp:author_login><![CDATA[theitcomdomainsteam]]></wp:author_login><wp:author_email><![CDATA[rukhlov@it.com]]></wp:author_email><wp:author_display_name><![CDATA[The it.com Domains Team]]></wp:author_display_name><wp:author_first_name><![CDATA[The it.com]]></wp:author_first_name><wp:author_last_name><![CDATA[Domains Team]]></wp:author_last_name></wp:author>
 	<wp:author><wp:author_id>1</wp:author_id><wp:author_login><![CDATA[webmaster]]></wp:author_login><wp:author_email><![CDATA[dev-email@wpengine.local]]></wp:author_email><wp:author_display_name><![CDATA[webmaster]]></wp:author_display_name><wp:author_first_name><![CDATA[]]></wp:author_first_name><wp:author_last_name><![CDATA[]]></wp:author_last_name></wp:author>
 
-		<wp:category>
+	<wp:category>
 		<wp:term_id>25</wp:term_id>
 		<wp:category_nicename><![CDATA[our-news]]></wp:category_nicename>
 		<wp:category_parent><![CDATA[]]></wp:category_parent>
@@ -55,7 +55,7 @@
 				
 	
 
-		<item>
+	<item>
 		<title><![CDATA[Expanding the Reach: .it.com Domains Can Now Be Listed on the Dan.com Marketplace]]></title>
 		<link>https://get.it.com/blog/expanding-the-reach-it-com-domains-can-now-be-listed-on-the-leading-domain-marketplace-dan-com/</link>
 		<pubDate>Mon, 29 Jul 2024 16:48:08 +0000</pubDate>
@@ -129,8 +129,9 @@
 		<wp:meta_key><![CDATA[_short_content]]></wp:meta_key>
 		<wp:meta_value><![CDATA[]]></wp:meta_value>
 		</wp:postmeta>
-							</item>
-					<item>
+	</item>
+
+	<item>
 		<title><![CDATA[blog_2]]></title>
 		<link>https://get.it.com/blog/expanding-the-reach-it-com-domains-can-now-be-listed-on-the-leading-domain-marketplace-dan-com/blog_2/</link>
 		<pubDate>Mon, 29 Jul 2024 15:53:48 +0000</pubDate>
