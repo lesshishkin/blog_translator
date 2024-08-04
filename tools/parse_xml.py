@@ -10,7 +10,13 @@ NSPACE = {
 
 
 def parse_xml(path):
-    tree = etree.parse(path)
+    try:
+        tree = etree.parse(path)
+    except FileNotFoundError:
+        print(f"Файл {file_path} не найден.")
+    except Exception as e:
+        print(f"Произошла ошибка: {e}")
+
     root = tree.getroot()
 
     # todo узнать только ли первый айтем нужен

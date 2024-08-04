@@ -1,7 +1,5 @@
 from lxml import etree
 from lxml.etree import QName
-import os
-from configs import config
 
 
 def create_wxr(posts, output_file_name):

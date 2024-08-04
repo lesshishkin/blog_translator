@@ -1,7 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
-from configs import config
+from configs.configs import config
 
 load_dotenv('.env')
 API_KEY = os.environ['GPT_API_KEY']

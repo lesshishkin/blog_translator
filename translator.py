@@ -1,12 +1,19 @@
-from create_wxr import create_wxr
-from parse_xml import parse_xml
-from configs import config
-from translation_tools import evaluate_translation, translate_post
+from tools.create_wxr import create_wxr
+from tools.parse_xml import parse_xml
+from configs.configs import config
+from tools.translation_tools import evaluate_translation, translate_post
+import argparse
 # from pprint import pprint
 # import transliterate
 
 if __name__ == '__main__':
-    post_path = 'getitcom.WordPress.2024-08-01.xml'
+    # command line args parse
+    parser = argparse.ArgumentParser(description='Blog posts translator')
+    parser.add_argument('file_path', type=str, help='Path to XML file')
+    args = parser.parse_args()
+    post_path = args.file_path
+    # post_path = "example.xml"
+
     original_post_data = parse_xml(post_path)
 
     translations = []

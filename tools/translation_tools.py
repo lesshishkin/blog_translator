@@ -1,7 +1,7 @@
-from gpt_tools import ask_gpt
-from configs import config
+from tools.gpt_tools import ask_gpt
+from configs.configs import config
 import evaluate
-from prompts import url_translate_prompt, content_translate_prompt, content_diff_prompt, basic_translate_prompt
+from configs.prompts import url_translate_prompt, content_translate_prompt, content_diff_prompt, basic_translate_prompt
 
 
 def translate_post(post_data, language, debug=False):
