@@ -19,9 +19,9 @@ def ask_gpt(prompt, text=None):
         ]
 
     client = OpenAI(api_key=API_KEY)
-    translation = client.chat.completions.create(
+    answer = client.chat.completions.create(
         model=config.model,
         messages=messages
     )
     # todo check it
-    return translation['choices'][0]['message']['content']
+    return answer['choices'][0]['message']['content']

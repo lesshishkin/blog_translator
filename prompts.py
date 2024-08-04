@@ -26,4 +26,5 @@ Back-translated Text:
 
 basic_translate_prompt = """
 You are a translator. Translate the following text to {language}. Do not output anything except the translated text.
+Text:
 """
