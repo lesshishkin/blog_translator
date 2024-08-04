@@ -37,6 +37,5 @@ def create_wxr(posts, output_file_name):
 
     tree = etree.ElementTree(rss)
 
-    output_path = os.path.join(config.output_dir, output_file_name)
-    with open(output_path, "wb") as f:
+    with open(output_file_name, "wb") as f:
         tree.write(f, encoding="UTF-8", xml_declaration=True, pretty_print=True)

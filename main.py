@@ -49,6 +49,6 @@ if __name__ == '__main__':
 
         translations.append(post)
 
-    output_path = 'output_' + post_path
-    create_wxr(translations, output_path)
-    print('File created:', output_path)
+    output_file = 'output_' + post_path
+    create_wxr(translations, output_file)
+    print('File created:', output_file)
