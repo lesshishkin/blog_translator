@@ -1,6 +1,5 @@
 from create_wxr import create_wxr
 from parse_xml import parse_xml
-# from prompts import url_translate_prompt, content_translate_prompt
 from dotenv import load_dotenv
 import os
 # from pprint import pprint
@@ -17,6 +16,7 @@ def translate_post(post_data, language):
     prompt = f"You are a translator. Translate the following text to {config.langs[language]}."
     text = post_data['title']
     translated_title = ask_gpt(prompt, text)
+    print('Title translated')
 
     if post_data['excerpt'] is not None:
         prompt = f"You are a translator. Translate the following text to {config.langs[language]}."
@@ -24,11 +24,13 @@ def translate_post(post_data, language):
         translated_excerpt = ask_gpt(prompt, text)
     else:
         translated_excerpt = ""
+    print('Excerpt translated')
 
     prompt = (f"You are a translator. Translate the following text to {config.langs[language]} while preserving any "
               f"HTML tags and other markup exactly as they are in the original text:")
     text = post_data['content']
     translated_content = ask_gpt(prompt, text)
+    print('Content translated')
 
     prompt = (f"You are a translator. Translate the following URL slug to {config.langs[language]}, and return the "
               f"translation in Latin characters (transliteration), keeping hyphens between words:")
@@ -36,6 +38,7 @@ def translate_post(post_data, language):
     translated_slug = ask_gpt(prompt, text)
 
     translated_url = config.blog_url + translated_slug
+    print('Slug translated')
 
     return translated_title, translated_excerpt, translated_content, translated_slug, translated_url
 
