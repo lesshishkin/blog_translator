@@ -1,7 +1,8 @@
 from gpt_tools import ask_gpt
 from configs import config
 import evaluate
-
+from prompts import url_translate_prompt, content_translate_prompt, content_diff_prompt
+# todo move prompts to separate file
 
 def translate_post(post_data, language, debug=False):
     prompt = f"You are a translator. Translate the following text to {config.langs[language]}."
