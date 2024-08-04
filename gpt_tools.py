@@ -1,6 +1,7 @@
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from configs import config
 
 load_dotenv('.env')
 API_KEY = os.environ['GPT_API_KEY']
@@ -19,7 +20,7 @@ def ask_gpt(prompt, text=None):
 
     client = OpenAI(api_key=API_KEY)
     translation = client.chat.completions.create(
-        model="gpt-4o",
+        model=config.model,
         messages=messages
     )
     # todo check it
