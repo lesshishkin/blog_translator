@@ -6,12 +6,12 @@ import argparse
 
 
 if __name__ == '__main__':
-    # command line args parse
-    parser = argparse.ArgumentParser(description='Blog posts translator')
-    parser.add_argument('file_path', type=str, help='Path to XML file')
-    args = parser.parse_args()
-    post_path = args.file_path
-    # post_path = "example.xml"
+    # # command line args parse
+    # parser = argparse.ArgumentParser(description='Blog posts translator')
+    # parser.add_argument('file_path', type=str, help='Path to XML file')
+    # args = parser.parse_args()
+    # post_path = args.file_path
+    post_path = "example.xml"
 
     original_post_data = parse_xml(post_path)
 

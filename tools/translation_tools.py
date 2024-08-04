@@ -48,7 +48,7 @@ def evaluate_translation(translation, original_text):
 
     # calculate BLEU score
     metric = evaluate.load("bleu")
-    bleu_score = metric.compute(double_translated_text, [original_text])
+    bleu_score = metric.compute(predictions=[double_translated_text], references=[[original_text]])
 
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
     prompt = content_diff_prompt.format(original_text=original_text, double_translated_text=double_translated_text)
