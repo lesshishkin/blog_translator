@@ -5,12 +5,14 @@ from configs.prompts import url_translate_prompt, content_translate_prompt, cont
 
 
 def translate_post(post_data, language, debug=False):
+    # title
     prompt = basic_translate_prompt.format(language=config.langs[language])
     text = post_data['title']
     translated_title = ask_gpt(prompt, text)
     if debug:
         print('Title translated')
 
+    # excerpt
     if post_data['excerpt'] is not None:
         prompt = basic_translate_prompt.format(language=config.langs[language])
         text = post_data['excerpt']
@@ -20,16 +22,17 @@ def translate_post(post_data, language, debug=False):
     if debug:
         print('Excerpt translated')
 
+    # content
     prompt = content_translate_prompt.format(language=config.langs[language])
     text = post_data['content']
     translated_content = ask_gpt(prompt, text)
     if debug:
         print('Content translated')
 
+    # link and slug
     prompt = url_translate_prompt.format(language=config.langs[language])
     text = post_data['link'].split('/')[-1]
     translated_slug = ask_gpt(prompt, text)
-
     translated_url = config.blog_url + translated_slug
     if debug:
         print('Slug translated')
@@ -55,6 +58,7 @@ def evaluate_translation(translation, original_text):
 
 
 def clean_text(text: str):
+    # todo добавить теги не нужные сюда
     filter_list = ["<!-- wp:paragraph -->", "<!-- /wp:paragraph -->", "<p>", "</p>"]
     for item in filter_list:
         text = text.replace(item, "")
