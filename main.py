@@ -12,16 +12,21 @@ if __name__ == '__main__':
     translations = []
 
     for lang in config.langs.keys():
-        title, excerpt, content, slug, link = translate_post(original_post_data, lang)
+        title, excerpt, content, slug, link = translate_post(original_post_data, lang, debug=True)
         bleu_score, gpt_score = evaluate_translation(content, original_post_data['content'])
         print('Language:  ', lang)
         print('BLEU score:', bleu_score)
-        print(gpt_score)
+        print('GPT score: ', gpt_score)
 
         # todo links localization
+        # проблема переведнных ссылок в том, что ты не можешь быть уверен что статья получила аппрув и запощена.
+        # как вариант можно просто чекать доступность ссылки перед подстановкой, но это как-то примитивно.
+        # было бы здорово иметь внешний источник правды отностительно ссылок
+
         # translated_data = localize_links(content, lang)
 
-        # todo разобраться со всеми полями
+        # todo разобраться со всеми полями, какие именно нужны
+        # todo раобраться где CDATA, где не CDATA
         post = {
             'title': title,
             'link': link,
@@ -44,11 +49,6 @@ if __name__ == '__main__':
 
         translations.append(post)
 
-    #   тест перевода:
-    #       переводим
-    #       переводи назад
-    #       считаем BLEU
-    #       подаем в гпт с промптом сравнить и выявить несоответствия
-
     output_path = 'output_' + post_path
     create_wxr(translations, output_path)
+    print('File created:', output_path)
