@@ -6,7 +6,7 @@ from translation_tools import evaluate_translation, translate_post
 # import transliterate
 
 if __name__ == '__main__':
-    post_path = 'input/getitcom.WordPress.2024-08-01.xml'
+    post_path = 'getitcom.WordPress.2024-08-01.xml'
     original_post_data = parse_xml(post_path)
 
     translations = []
