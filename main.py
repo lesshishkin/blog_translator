@@ -52,15 +52,12 @@ def evaluate_translation(translation, original_text):
     metric = evaluate.load("bleu")
     bleu_score = metric.compute(double_translated_text, [original_text])
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
-    prompt = f"""
-    You are a translation evaluator. Compare the original text and the back-translated text, ignoring any HTML tags and markup. Provide a score from 1 to 5 where:
-    1 - Extremely poor translation
-    2 - Poor translation
-    3 - Mediocre translation
-    4 - Good translation
-    5 - Excellent translation
+    prompt = f""" You are a translation evaluator. Compare the original text and the back-translated text, 
+    ignoring any HTML tags and markup. Provide a score from 1 to 5 where: 1 - Extremely poor translation, 2 - Poor 
+    translation, 3 - Mediocre translation, 4 - Good translation, 5 - Excellent translation
 
-    Additionally, quote the places in the back-translated text and the original text where the meaning has changed or been lost during the translation process, ignoring any HTML tags and markup.
+    Additionally, quote the places in the back-translated text and the original text where the meaning has changed or 
+    been lost during the translation process, ignoring any HTML tags and markup.
 
     Original Text:
     {original_text}
@@ -89,11 +86,12 @@ def ask_gpt(prompt, text=None):
         model="gpt-4o",
         messages=messages
     )
-
+    # todo check it
     return translation['choices'][0]['message']['content']
 
 
 def localize_links(post_data, language):
+    # эта функция будет
     pass
 
 
