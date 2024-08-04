@@ -42,7 +42,8 @@ def evaluate_translation(translation, original_text):
     # translate the translation back to original lang
     prompt = (f"You are a translator. Translate the following text to {config.origin_lang} while preserving any "
               f"HTML tags and other markup exactly as they are in the original text:")
-    double_translated_text = ask_gpt(prompt, translation)
+    double_translated_text = clean_text(ask_gpt(prompt, translation))
+    original_text = clean_text(original_text)
     # calculate BLEU score
     metric = evaluate.load("bleu")
     bleu_score = metric.compute(double_translated_text, [original_text])
@@ -63,6 +64,14 @@ def evaluate_translation(translation, original_text):
     gpt_score = ask_gpt(prompt)
 
     return bleu_score['bleu'], gpt_score
+
+
+def clean_text(text: str):
+    """Удаляет из текста теги"""
+    filter_list = ["<!-- wp:paragraph -->", "<!-- /wp:paragraph -->", "<p>", "</p>"]
+    for item in filter_list:
+        text = text.replace(item, "")
+    return text
 
 
 def localize_links(post_data, language):
