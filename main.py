@@ -1,12 +1,13 @@
 from create_wxr import create_wxr
 from parse_xml import parse_xml
-from prompts import url_translate_prompt, content_translate_prompt
+# from prompts import url_translate_prompt, content_translate_prompt
 from dotenv import load_dotenv
 import os
-from pprint import pprint
+# from pprint import pprint
 from configs import config
 from openai import OpenAI
-import transliterate
+# import transliterate
+import evaluate
 
 load_dotenv('.env')
 API_KEY = os.environ['GPT_API_KEY']
@@ -22,7 +23,7 @@ def translate_post(post_data, language):
         text = post_data['excerpt']
         translated_excerpt = ask_gpt(prompt, text)
     else:
-        translated_excerpt = None
+        translated_excerpt = ""
 
     prompt = (f"You are a translator. Translate the following text to {config.langs[language]} while preserving any "
               f"HTML tags and other markup exactly as they are in the original text:")
@@ -39,14 +40,51 @@ def translate_post(post_data, language):
     return translated_title, translated_excerpt, translated_content, translated_slug, translated_url
 
 
-def ask_gpt(prompt, text):
-    client = OpenAI(api_key=API_KEY)
-    translation = client.chat.completions.create(
-        model="gpt-4o",
-        messages=[
+def evaluate_translation(translation, original_text):
+    # translate the translation back to original lang
+    prompt = (f"You are a translator. Translate the following text to {config.origin_lang} while preserving any "
+              f"HTML tags and other markup exactly as they are in the original text:")
+    double_translated_text = ask_gpt(prompt, translation)
+    # calculate BLEU score
+    metric = evaluate.load("bleu")
+    bleu_score = metric.compute(double_translated_text, [original_text])
+    # попросим модель сравнить два текст
+    prompt = f"""
+    You are a translation evaluator. Compare the original text and the back-translated text, ignoring any HTML tags and markup. Provide a score from 1 to 5 where:
+    1 - Extremely poor translation
+    2 - Poor translation
+    3 - Mediocre translation
+    4 - Good translation
+    5 - Excellent translation
+
+    Additionally, quote the places in the back-translated text and the original text where the meaning has changed or been lost during the translation process, ignoring any HTML tags and markup.
+
+    Original Text:
+    {original_text}
+
+    Back-translated Text:
+    {double_translated_text}
+    """
+    gpt_score = ask_gpt(prompt)
+
+    return bleu_score['bleu'],gpt_score
+
+
+def ask_gpt(prompt, text=None):
+    if text is not None:
+        messages = [
             {"role": "system", "content": prompt},
             {"role": "user", "content": text}
         ]
+    else:
+        messages = [
+            {"role": "system", "content": prompt},
+        ]
+
+    client = OpenAI(api_key=API_KEY)
+    translation = client.chat.completions.create(
+        model="gpt-4o",
+        messages=messages
     )
 
     return translation['choices'][0]['message']['content']
@@ -64,6 +102,11 @@ if __name__ == '__main__':
 
     for lang in config.langs.keys():
         title, excerpt, content, slug, link = translate_post(original_post_data, lang)
+        bleu_score, gpt_score = evaluate_translation(content, original_post_data['content'])
+        print('Language:  ', lang)
+        print('BLEU score:', bleu_score)
+        print(gpt_score)
+
         # todo links localization
         # translated_data = localize_links(content, lang)
 
