@@ -51,7 +51,7 @@ def evaluate_translation(translation, original_text):
     # calculate BLEU score
     metric = evaluate.load("bleu")
     bleu_score = metric.compute(double_translated_text, [original_text])
-    # попросим модель сравнить два текст
+    # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
     prompt = f"""
     You are a translation evaluator. Compare the original text and the back-translated text, ignoring any HTML tags and markup. Provide a score from 1 to 5 where:
     1 - Extremely poor translation
