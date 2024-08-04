@@ -67,7 +67,6 @@ def evaluate_translation(translation, original_text):
 
 
 def clean_text(text: str):
-    """Удаляет из текста теги"""
     filter_list = ["<!-- wp:paragraph -->", "<!-- /wp:paragraph -->", "<p>", "</p>"]
     for item in filter_list:
         text = text.replace(item, "")
