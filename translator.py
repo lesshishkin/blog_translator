@@ -3,8 +3,7 @@ from tools.parse_xml import parse_xml
 from configs.configs import config
 from tools.translation_tools import evaluate_translation, translate_post
 import argparse
-# from pprint import pprint
-# import transliterate
+
 
 if __name__ == '__main__':
     # command line args parse
@@ -17,7 +16,6 @@ if __name__ == '__main__':
     original_post_data = parse_xml(post_path)
 
     translations = []
-
     for lang in config.langs.keys():
         title, excerpt, content, slug, link = translate_post(original_post_data, lang, debug=True)
         bleu_score, gpt_score = evaluate_translation(content, original_post_data['content'])
@@ -29,8 +27,6 @@ if __name__ == '__main__':
         # проблема переведнных ссылок в том, что ты не можешь быть уверен что статья получила аппрув и запощена.
         # как вариант можно просто чекать доступность ссылки перед подстановкой, но это как-то примитивно.
         # было бы здорово иметь внешний источник правды отностительно ссылок
-
-        # translated_data = localize_links(content, lang)
 
         # todo разобраться со всеми полями, какие именно нужны
         # todo раобраться где CDATA, где не CDATA
