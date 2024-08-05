@@ -13,7 +13,7 @@ def parse_xml(path):
     try:
         tree = etree.parse(path)
     except FileNotFoundError:
-        print(f"Файл {file_path} не найден.")
+        print(f"Файл {path} не найден.")
     except Exception as e:
         print(f"Произошла ошибка: {e}")
 
