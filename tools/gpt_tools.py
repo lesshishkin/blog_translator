@@ -19,9 +19,13 @@ def ask_gpt(prompt, text=None):
         ]
 
     client = OpenAI(api_key=API_KEY)
-    response = client.chat.completions.create(
-        model=config.model,
-        messages=messages
-    )
-    # todo check it
-    return response.choices[0].message.content
+
+    try:
+        response = client.chat.completions.create(
+            model=config.model,
+            messages=messages
+        )
+        return response.choices[0].message.content
+    except Exception as e:
+        print(f"Problems with GPT!")
+        raise e
