@@ -1,7 +1,8 @@
 from tools.gpt_tools import ask_gpt
 from configs.configs import config
 import evaluate
-from configs.prompts import url_translate_prompt, content_translate_prompt, content_diff_prompt, basic_translate_prompt
+from configs.prompts import (url_translate_prompt, content_translate_prompt, content_diff_prompt,
+                             basic_translate_prompt, json_diff_prompt, text_diff_prompt)
 from transliterate import translit
 import re
 from unidecode import unidecode
@@ -44,18 +45,20 @@ def translate_post(post_data, language, debug=False):
     return translated_title, translated_excerpt, translated_content, translated_slug, translated_url
 
 
-def evaluate_translation(translation, original_text):
+def evaluate_translation(translation, original_text, lang):
     # translate the translation back to original lang
     prompt = content_translate_prompt.format(language=config.origin_lang)
     double_translated_text = clean_text(ask_gpt(prompt, translation))
-    original_text = clean_text(original_text)
+    cleaned_original_text = clean_text(original_text)
 
     # calculate BLEU score
     metric = evaluate.load("bleu")
-    bleu_score = metric.compute(predictions=[double_translated_text], references=[[original_text]])
+    bleu_score = metric.compute(predictions=[double_translated_text], references=[[cleaned_original_text]])
 
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
-    prompt = content_diff_prompt.format(original_text=original_text, double_translated_text=double_translated_text)
+    # prompt = content_diff_prompt.format(original_text=original_text, double_translated_text=double_translated_text)
+    prompt = (text_diff_prompt.replace("{original_text}", original_text).
+              replace('{translated_text}', translation).replace("{language}", lang))
     gpt_score = ask_gpt(prompt)
 
     return bleu_score['bleu'], gpt_score
