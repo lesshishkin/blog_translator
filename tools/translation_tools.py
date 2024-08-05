@@ -13,7 +13,7 @@ def translate_post(post_data, language, debug=False):
         print('Title translated')
 
     # excerpt
-    if post_data['excerpt'] is not None:
+    if len(post_data['excerpt']) != 0:
         prompt = basic_translate_prompt.format(language=config.langs[language])
         text = post_data['excerpt']
         translated_excerpt = ask_gpt(prompt, text)
@@ -31,7 +31,11 @@ def translate_post(post_data, language, debug=False):
 
     # link and slug
     prompt = url_translate_prompt.format(language=config.langs[language])
-    text = post_data['link'].split('/')[-1]
+    if post_data['link'].endswith('/'):
+        idx = -2
+    else:
+        idx = -1
+    text = post_data['link'].split('/')[idx]
     translated_slug = ask_gpt(prompt, text)
     translated_url = config.blog_url + translated_slug
     if debug:
