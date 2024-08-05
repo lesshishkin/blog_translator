@@ -17,11 +17,12 @@ if __name__ == '__main__':
 
     translations = []
     for lang in config.langs.keys():
-        title, excerpt, content, slug, link = translate_post(original_post_data, lang, debug=True)
+        print(f'Translating to {config.langs[lang]}...')
+        title, excerpt, content, slug, link = translate_post(original_post_data, lang, debug=False)
         bleu_score, gpt_score = evaluate_translation(content, original_post_data['content'])
-        print('Language:  ', lang)
         print('BLEU score:', bleu_score)
         print('GPT score: ', gpt_score)
+        print()
 
         # todo links localization
         # проблема переведнных ссылок в том, что ты не можешь быть уверен что статья получила аппрув и запощена.
