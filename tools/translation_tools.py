@@ -2,6 +2,9 @@ from tools.gpt_tools import ask_gpt
 from configs.configs import config
 import evaluate
 from configs.prompts import url_translate_prompt, content_translate_prompt, content_diff_prompt, basic_translate_prompt
+from transliterate import translit
+import re
+from unidecode import unidecode
 
 
 def translate_post(post_data, language, debug=False):
@@ -30,13 +33,7 @@ def translate_post(post_data, language, debug=False):
         print('Content translated')
 
     # link and slug
-    prompt = url_translate_prompt.format(language=config.langs[language])
-    if post_data['link'].endswith('/'):
-        idx = -2
-    else:
-        idx = -1
-    text = post_data['link'].split('/')[idx]
-    translated_slug = ask_gpt(prompt, text)
+    translated_slug = urlify(translated_title, language)
     translated_url = config.blog_url + translated_slug
     if debug:
         print('Slug translated')
@@ -62,9 +59,7 @@ def evaluate_translation(translation, original_text):
 
 
 def clean_text(text: str):
-    # todo добавить теги не нужные сюда
-    filter_list = ["<!-- wp:paragraph -->", "<!-- /wp:paragraph -->", "<p>", "</p>"]
-    for item in filter_list:
+    for item in config.filter_list:
         text = text.replace(item, "")
     return text
 
@@ -73,3 +68,19 @@ def localize_links(post_data, language):
     # эта функция будет сканировать статью на предмет ссылок. искать совпадения в базе, подставлять в текст
     # переведенные ссылки
     pass
+
+
+def urlify(text, lang):
+    # если текст кирилический, то transliterate, если алфавит латинский, то unidecode
+    if lang in config.transliterate_languages:
+        transliterated_text = translit(value=text, language_code=lang, reversed=True)
+    elif lang in config.unidecode_languages:
+        transliterated_text = unidecode(text)
+    else:
+        raise Exception('Unknown language!')
+
+    transliterated_text = re.sub(r'\s+', '-', transliterated_text)
+    urlified_text = re.sub(r'[^a-zA-Z0-9\-]', '', transliterated_text)
+    urlified_text = urlified_text.lower()
+
+    return urlified_text
