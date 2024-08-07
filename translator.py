@@ -8,23 +8,28 @@ from tools.make_report import create_html
 
 if __name__ == '__main__':
     # command line args parse
-    # parser = argparse.ArgumentParser(description='Blog posts translator')
-    # parser.add_argument('file_path', type=str, help='Path to XML file')
-    # args = parser.parse_args()
-    # post_path = args.file_path
-    post_path = "example.xml"
+    parser = argparse.ArgumentParser(description='Blog posts translator')
+    parser.add_argument('file_path', type=str, help='Path to XML file')
+    parser.add_argument('--bleu', action='store_true', help='Compute BLEU score')
+    args = parser.parse_args()
+    post_path = args.file_path
+    compute_bleu = args.bleu
+
+    # post_path = "example.xml"
+    # compute_bleu = False
 
     original_post_data = parse_xml(post_path)
 
     translations = []
     for lang in config.langs.keys():
         print(f'Translating to {config.langs[lang]}...')
-        title, excerpt, content, slug, link = translate_post(original_post_data, lang, debug=False)
-        bleu_score, gpt_score = evaluate_translation(content,
-                                                     original_post_data['content'],
-                                                     config.langs[lang],
-                                                     compute_bleu=False)
-        create_html(gpt_score, config.langs[lang], "report_"+str(lang)+".html")
+        title, excerpt, content, slug, link = translate_post(post_data=original_post_data, language=lang, debug=False)
+        bleu_score, gpt_score = evaluate_translation(translation=content,
+                                                     original_text=original_post_data['content'],
+                                                     lang=config.langs[lang],
+                                                     compute_bleu=compute_bleu)
+        create_html(data=gpt_score, lang=config.langs[lang], file_name="report_"+str(lang)+".html")
+
         if bleu_score is not None:
             print('BLEU score:', bleu_score)
         print('GPT answer: ', gpt_score)
