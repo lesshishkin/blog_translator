@@ -36,7 +36,7 @@ def create_html(data, lang, file_name):
         <p><strong>Explanation:</strong> {explanation}</p>
         <table>
             <tr>
-                <th>Sentence Number</th>
+                <th>#</th>
                 <th>Original Sentence</th>
                 <th>Translated Sentence</th>
                 <th>Accuracy</th>
