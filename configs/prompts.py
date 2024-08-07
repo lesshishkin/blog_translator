@@ -69,7 +69,7 @@ Format your output as follows:
       \"meaning_intact\": \"Yes\",\
       \"well_phrased\": \"Yes\",\
       \"errors\": \"None\",\
-      \"score\": \"5'\",\
+      \"score\": 5',\
     },\
     {\
       \"sentence_number\": 2,\
@@ -80,7 +80,7 @@ Format your output as follows:
       \"meaning_intact\": \"No\",\
       \"well_phrased\": \"Yes\",\
       \"errors\": \"The translation omits the alliteration and specificity of 'seashells by the seashore.'\",\
-      \"score\": \"2'\",\
+      \"score\": 2',\
     }\
   ],\
   \"explanation\": \"While most sentences are accurately translated and well-phrased, some nuances and stylistic elements are occasionally lost.\"\
