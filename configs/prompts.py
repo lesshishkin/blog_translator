@@ -4,13 +4,12 @@ translation in Latin characters (transliteration), keeping hyphens between words
 """
 
 content_translate_prompt = """
-You are a translator. Translate the following text to {language} while preserving any 
+You are a translator. Translate the text provided by the user to {language} while preserving any 
 HTML tags and other markup exactly as they are in the original text. Do not output anything except the translated text.
 The translation must be of excellent quality, preserving the original meaning, and the sentences should be well-formed 
 and natural in the specified language. Be attentive to word endings.
-IMPORTANT! You must ignore and not translate tags and expressions in curly 
-brackets (for example {{link1}}, {{link2}}, {{link3}}), they must remain unchanged!
-Text:
+IMPORTANT! You SHOULD NOT translate or alter the text enclosed between the symbols "^". 
+(for example ^link1^, ^link2^, ^link3^), they must remain unchanged!
 """
 
 content_diff_prompt = """
@@ -29,8 +28,7 @@ Back-translated Text:
 """
 
 basic_translate_prompt = """
-You are a translator. Translate the following text to {language}. Do not output anything except the translated text.
-Text:
+You are a translator. Translate the text provided by the user to {language}. Do not output anything except the translated text.
 """
 
 json_diff_prompt = """

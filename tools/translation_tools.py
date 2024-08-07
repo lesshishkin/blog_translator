@@ -34,7 +34,7 @@ def translate_post(post_data, language, debug=False):
     # убираем ссылки перед подачей в gpt
     text_without_links, links = replace_links(post_data['content'])
     prompt = content_translate_prompt.format(language=config.langs[language])
-    translated_content = ask_gpt(text_without_links, text)
+    translated_content = ask_gpt(prompt, text_without_links)
     # возвращаем ссылки
     text_with_links = restore_links(translated_content, links)
 
@@ -100,33 +100,34 @@ def urlify(text, lang):
 
 
 def replace_links(text):
-    links = {}
-    link_counter = 1
+    link_pattern = re.compile(r'<a\s+href="([^"]+)">([^<]+)</a>', re.IGNORECASE)
 
-    def link_replacer(match):
-        nonlocal link_counter
+    links_dict = {}
+    counter = 1
+
+    def replace_link(match):
+        nonlocal counter
         url = match.group(1)
-        placeholder = f"link{link_counter}"
-        links[placeholder] = url
-        link_counter += 1
-        return match.group(0).replace(url, f"{{{placeholder}}}")
+        link_text = match.group(2)
+        placeholder = f"^link{counter}^"
+        links_dict[placeholder] = url
+        counter += 1
+        return f'<a href="{placeholder}">{link_text}</a>'
 
-    # Регулярное выражение для поиска URL в тегах <a href="...">
-    pattern = re.compile(r'<a\s+[^>]*href=["\']([^"\']*)["\']', re.IGNORECASE)
-    new_text = re.sub(pattern, link_replacer, text)
+    new_text = link_pattern.sub(replace_link, text)
 
-    return new_text, links
+    return new_text, links_dict
 
 
-def restore_links(text, links):
-    def link_replacer(match):
+def restore_links(text, links_dict):
+    placeholder_pattern = re.compile(r'\^link\d+\^')
+
+    def replace_placeholder(match):
         placeholder = match.group(0)
-        link_key = placeholder.strip('{}')
-        return links.get(link_key, placeholder)
+        url = links_dict.get(placeholder, placeholder)
+        return url
 
-    # Регулярное выражение для поиска плейсхолдеров {link1}, {link2}, ...
-    pattern = re.compile(r'\{{link\d+\}}')
-    restored_text = re.sub(pattern, link_replacer, text)
+    restored_text = placeholder_pattern.sub(replace_placeholder, text)
 
     return restored_text
 
