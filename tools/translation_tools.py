@@ -1,8 +1,7 @@
 from tools.gpt_tools import ask_gpt
 from configs.configs import config
 import evaluate
-from configs.prompts import (url_translate_prompt, content_translate_prompt, content_diff_prompt,
-                             basic_translate_prompt, json_diff_prompt, text_diff_prompt)
+from configs.prompts import content_translate_prompt, basic_translate_prompt, json_diff_prompt
 from transliterate import translit
 import re
 from unidecode import unidecode
