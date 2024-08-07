@@ -20,10 +20,14 @@ if __name__ == '__main__':
     for lang in config.langs.keys():
         print(f'Translating to {config.langs[lang]}...')
         title, excerpt, content, slug, link = translate_post(original_post_data, lang, debug=False)
-        bleu_score, gpt_score = evaluate_translation(content, original_post_data['content'], config.langs[lang])
+        bleu_score, gpt_score = evaluate_translation(content,
+                                                     original_post_data['content'],
+                                                     config.langs[lang],
+                                                     compute_bleu=False)
         create_html(gpt_score, config.langs[lang], "report_"+str(lang)+".html")
-        print('BLEU score:', bleu_score)
-        print('GPT score: ', gpt_score)
+        if bleu_score is not None:
+            print('BLEU score:', bleu_score)
+        print('GPT answer: ', gpt_score)
         print()
 
         # todo links localization

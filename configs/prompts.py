@@ -47,6 +47,7 @@ At the end of the analysis, provide an overall rating for the translation from 1
 3. Mediocre translation
 4. Good translation
 5. Excellent translation
+If there is at least one mistake, inaccuracy or other imperfection of the translation, do not give the highest score
 
 Format your output as follows:
 
