@@ -57,25 +57,25 @@ Format your output as follows:
       \"sentence_number\": 1,\
       \"original_sentence\": \"The quick brown fox jumps over the lazy dog.\",\
       \"translated_sentence\": \"Der schnelle braune Fuchs springt über den faulen Hund.\",\
+      \"additional_comments\": \"The translation is precise and natural-sounding.\"\
       \"accuracy\": \"Accurate\",\
       \"meaning_intact\": \"Yes\",\
       \"well_phrased\": \"Yes\",\
       \"errors\": \"None\",\
-      \"additional_comments\": \"The translation is precise and natural-sounding.\"\
     },\
     {\
       \"sentence_number\": 2,\
       \"original_sentence\": \"She sells seashells by the seashore.\",\
       \"translated_sentence\": \"Sie verkauft Muscheln am Strand.\",\
+      \"additional_comments\": \"The translation fails to capture the playful nature of the original sentence.\"\
       \"accuracy\": \"Inaccurate\",\
       \"meaning_intact\": \"No\",\
       \"well_phrased\": \"Yes\",\
       \"errors\": \"The translation omits the alliteration and specificity of 'seashells by the seashore.'\",\
-      \"additional_comments\": \"The translation fails to capture the playful nature of the original sentence.\"\
     }\
   ],\
-  \"overall_translation_quality\": 4,\
   \"explanation\": \"While most sentences are accurately translated and well-phrased, some nuances and stylistic elements are occasionally lost.\"\
+  \"overall_translation_quality\": 4,\
 }
 ```
 

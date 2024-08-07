@@ -6,6 +6,7 @@ from configs.prompts import (url_translate_prompt, content_translate_prompt, con
 from transliterate import translit
 import re
 from unidecode import unidecode
+from configs.structures import TranslationEvaluation
 
 
 def translate_post(post_data, language, debug=False):
@@ -56,10 +57,9 @@ def evaluate_translation(translation, original_text, lang):
     bleu_score = metric.compute(predictions=[double_translated_text], references=[[cleaned_original_text]])
 
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
-    # prompt = content_diff_prompt.format(original_text=original_text, double_translated_text=double_translated_text)
     prompt = (text_diff_prompt.replace("{original_text}", original_text).
               replace('{translated_text}', translation).replace("{language}", lang))
-    gpt_score = ask_gpt(prompt)
+    gpt_score = ask_gpt(prompt, response_format=TranslationEvaluation)
 
     return bleu_score['bleu'], gpt_score
 

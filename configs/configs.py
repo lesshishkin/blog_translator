@@ -8,7 +8,7 @@ config.langs = {'ru': 'Russian',
                 'es': 'Spanish'}
 # config.langs = {'ru': 'Russian'}
 config.origin_lang = "English"
-config.model = "gpt-4o"
+config.model = "gpt-4o-2024-08-06"
 
 # Список кодов языков для transliterate
 config.transliterate_languages = ['ru', 'uk', 'be', 'bg', 'mk', 'sr', 'hy', 'el']
