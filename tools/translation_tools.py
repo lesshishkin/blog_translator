@@ -13,6 +13,8 @@ def translate_post(post_data, language, debug=False):
     if 'title' not in post_data or 'content' not in post_data:
         raise KeyError('post_data должен содержать ключи "title" и "content"')
 
+    # todo предвариетльно извлечь все ссылки из контента, а потом поставить их на место, чтобы они не шли в gpt
+
     # title
     prompt = basic_translate_prompt.format(language=config.langs[language])
     text = post_data['title']
