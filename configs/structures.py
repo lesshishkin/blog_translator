@@ -11,6 +11,7 @@ class SentenceEvaluation(BaseModel):
     meaning_intact: str
     well_phrased: str
     errors: str
+    score: int
 
 
 class TranslationEvaluation(BaseModel):

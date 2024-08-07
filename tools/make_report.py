@@ -105,6 +105,7 @@ def create_html(data, lang, file_name):
                 <th>Meaning Intact</th>
                 <th>Well Phrased</th>
                 <th>Errors</th>
+                <th>Score</th>
                 <th>Additional Comments</th>
             </tr>
     """.format(lang=lang, quality=data['overall_translation_quality'], explanation=data['explanation'])
@@ -119,6 +120,7 @@ def create_html(data, lang, file_name):
                 <td>{meaning_intact}</td>
                 <td>{well_phrased}</td>
                 <td>{errors}</td>
+                <td>{score}</td>
                 <td>{additional_comments}</td>
             </tr>
         """.format(
@@ -129,6 +131,7 @@ def create_html(data, lang, file_name):
             meaning_intact=sentence['meaning_intact'],
             well_phrased=sentence['well_phrased'],
             errors=sentence['errors'],
+            score=sentence['score'],
             additional_comments=sentence['additional_comments']
         )
 

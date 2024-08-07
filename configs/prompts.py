@@ -42,14 +42,18 @@ following for each pair of sentences:
 3. Is the translated sentence well-phrased?
 4. Are there any grammatical or linguistic errors in the translation?
 5. Any other relevant characteristics that can help assess the translation quality.
+6. Rate the quality of the translation of this sentence (below are the possible rating options).
 
-At the end of the analysis, provide an overall rating for the translation from 1 to 5, where:
+Here are the possible ratings:
 1. Extremely poor translation
 2. Poor translation
 3. Mediocre translation
 4. Good translation
 5. Excellent translation
 If there is at least one mistake, inaccuracy or other imperfection of the translation, do not give the highest score
+
+At the end, provide an overall rating for the translation based on the previous ratings for individual sentences. 
+Include an explanation for the given rating.
 
 Format your output as follows:
 
@@ -65,6 +69,7 @@ Format your output as follows:
       \"meaning_intact\": \"Yes\",\
       \"well_phrased\": \"Yes\",\
       \"errors\": \"None\",\
+      \"score\": \"5'\",\
     },\
     {\
       \"sentence_number\": 2,\
@@ -75,6 +80,7 @@ Format your output as follows:
       \"meaning_intact\": \"No\",\
       \"well_phrased\": \"Yes\",\
       \"errors\": \"The translation omits the alliteration and specificity of 'seashells by the seashore.'\",\
+      \"score\": \"2'\",\
     }\
   ],\
   \"explanation\": \"While most sentences are accurately translated and well-phrased, some nuances and stylistic elements are occasionally lost.\"\
