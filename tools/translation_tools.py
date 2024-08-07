@@ -1,7 +1,7 @@
 from tools.gpt_tools import ask_gpt
 from configs.configs import config
 import evaluate
-from configs.prompts import content_translate_prompt, basic_translate_prompt, json_diff_prompt
+from configs.prompts import content_translate_prompt, basic_translate_prompt, evaluation_prompt
 from transliterate import translit
 import re
 from unidecode import unidecode
@@ -63,7 +63,7 @@ def evaluate_translation(translation, original_text, lang, compute_bleu=False):
         bleu_score = None
 
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
-    prompt = (json_diff_prompt.
+    prompt = (evaluation_prompt.
               replace("{original_text}", original_text).
               replace('{translated_text}', translation).
               replace("{language}", lang))
