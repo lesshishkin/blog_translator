@@ -64,8 +64,10 @@ def evaluate_translation(translation, original_text, lang, compute_bleu=False):
         bleu_score = None
 
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
-    prompt = (json_diff_prompt.replace("{original_text}", original_text).
-              replace('{translated_text}', translation).replace("{language}", lang))
+    prompt = (json_diff_prompt.
+              replace("{original_text}", original_text).
+              replace('{translated_text}', translation).
+              replace("{language}", lang))
     gpt_score = ask_gpt(prompt, response_format=TranslationEvaluation)
 
     return bleu_score, gpt_score
