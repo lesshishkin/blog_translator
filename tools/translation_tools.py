@@ -45,7 +45,7 @@ def translate_post(post_data, language, debug=False):
     translated_slug = urlify(translated_title, language)
     translated_url = config.blog_url + translated_slug
     if debug:
-        print('Slug translated')
+        print('Url and Slug translated')
 
     return translated_title, translated_excerpt, text_with_links, translated_slug, translated_url
 
