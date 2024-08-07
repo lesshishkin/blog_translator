@@ -25,6 +25,9 @@ def create_html(data, lang, file_name):
             th {{
                 background-color: #f2f2f2;
             }}
+            .low-score {{
+                background-color: #ffcccc;
+            }}
         </style>
     </head>
     <body>
@@ -46,8 +49,9 @@ def create_html(data, lang, file_name):
     """.format(lang=lang, quality=data['overall_translation_quality'], explanation=data['explanation'])
 
     for sentence in data['evaluations']:
+        row_class = "low-score" if sentence['score'] < 5 else ""
         html += """
-            <tr>
+            <tr class="{row_class}">
                 <td>{sentence_number}</td>
                 <td>{original_sentence}</td>
                 <td>{translated_sentence}</td>
@@ -59,6 +63,7 @@ def create_html(data, lang, file_name):
                 <td>{additional_comments}</td>
             </tr>
         """.format(
+            row_class=row_class,
             sentence_number=sentence['sentence_number'],
             original_sentence=sentence['original_sentence'],
             translated_sentence=sentence['translated_sentence'],
