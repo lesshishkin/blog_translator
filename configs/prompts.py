@@ -7,7 +7,9 @@ content_translate_prompt = """
 You are a translator. Translate the following text to {language} while preserving any 
 HTML tags and other markup exactly as they are in the original text. Do not output anything except the translated text.
 The translation must be of excellent quality, preserving the original meaning, and the sentences should be well-formed 
-and natural in the specified language.
+and natural in the specified language. Be attentive to word endings.
+IMPORTANT! You must ignore and not translate tags and expressions in curly 
+brackets (for example {{link1}}, {{link2}}, {{link3}}), they must remain unchanged!
 Text:
 """
 
@@ -31,9 +33,11 @@ You are a translator. Translate the following text to {language}. Do not output 
 Text:
 """
 
-
 json_diff_prompt = """
-You are an assistant tasked with evaluating the quality of translations. You will receive two texts: `original_text` and `translated_text`, along with a variable `lang` indicating the language of the translation. Your job is to analyze each sentence from the original text and its corresponding sentence in the translated text. You need to determine the following for each pair of sentences:
+You are an assistant tasked with evaluating the quality of translations. You will receive two texts: `original_text` 
+and `translated_text`, along with a variable `lang` indicating the language of the translation. Your job is to analyze 
+each sentence from the original text and its corresponding sentence in the translated text. You need to determine the 
+following for each pair of sentences:
 
 1. Is the translation accurate?
 2. Does the meaning remain intact after translation?
@@ -97,7 +101,6 @@ Language
 {language}
 ```
 """
-
 
 text_diff_prompt = """
 You are an assistant tasked with evaluating the quality of translations. You will receive two texts: `original_text` and `translated_text`, along with a variable `lang` indicating the language of the translation. Your job is to analyze each sentence from the original text and its corresponding sentence in the translated text. You need to determine the following for each pair of sentences:

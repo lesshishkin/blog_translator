@@ -13,8 +13,6 @@ def translate_post(post_data, language, debug=False):
     if 'title' not in post_data or 'content' not in post_data:
         raise KeyError('post_data должен содержать ключи "title" и "content"')
 
-    # todo предвариетльно извлечь все ссылки из контента, а потом поставить их на место, чтобы они не шли в gpt
-
     # title
     prompt = basic_translate_prompt.format(language=config.langs[language])
     text = post_data['title']
@@ -33,9 +31,13 @@ def translate_post(post_data, language, debug=False):
         print('Excerpt translated')
 
     # content
+    # убираем ссылки перед подачей в gpt
+    text_without_links, links = replace_links(post_data['content'])
     prompt = content_translate_prompt.format(language=config.langs[language])
-    text = post_data['content']
-    translated_content = ask_gpt(prompt, text)
+    translated_content = ask_gpt(text_without_links, text)
+    # возвращаем ссылки
+    text_with_links = restore_links(translated_content, links)
+
     if debug:
         print('Content translated')
 
@@ -45,7 +47,7 @@ def translate_post(post_data, language, debug=False):
     if debug:
         print('Slug translated')
 
-    return translated_title, translated_excerpt, translated_content, translated_slug, translated_url
+    return translated_title, translated_excerpt, text_with_links, translated_slug, translated_url
 
 
 def evaluate_translation(translation, original_text, lang, compute_bleu=False):
@@ -95,3 +97,37 @@ def urlify(text, lang):
     urlified_text = urlified_text.lower()
 
     return urlified_text
+
+
+def replace_links(text):
+    links = {}
+    link_counter = 1
+
+    def link_replacer(match):
+        nonlocal link_counter
+        url = match.group(1)
+        placeholder = f"link{link_counter}"
+        links[placeholder] = url
+        link_counter += 1
+        return match.group(0).replace(url, f"{{{placeholder}}}")
+
+    # Регулярное выражение для поиска URL в тегах <a href="...">
+    pattern = re.compile(r'<a\s+[^>]*href=["\']([^"\']*)["\']', re.IGNORECASE)
+    new_text = re.sub(pattern, link_replacer, text)
+
+    return new_text, links
+
+
+def restore_links(text, links):
+    def link_replacer(match):
+        placeholder = match.group(0)
+        link_key = placeholder.strip('{}')
+        return links.get(link_key, placeholder)
+
+    # Регулярное выражение для поиска плейсхолдеров {link1}, {link2}, ...
+    pattern = re.compile(r'\{{link\d+\}}')
+    restored_text = re.sub(pattern, link_replacer, text)
+
+    return restored_text
+
+
