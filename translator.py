@@ -24,10 +24,18 @@ if __name__ == '__main__':
     for lang in config.langs.keys():
         print(f'Translating to {config.langs[lang]}...')
         title, excerpt, content, slug, link = translate_post(post_data=original_post_data, language=lang, debug=False)
-        bleu_score, gpt_score = evaluate_translation(translation=content,
-                                                     original_text=original_post_data['content'],
+
+        original_text_to_evaluate = '\n'.join([
+            original_post_data['title'],
+            original_post_data['excerpt'],
+            original_post_data['content']
+        ])
+        translated_text_to_evaluate = '\n'.join([title, excerpt, content])
+        bleu_score, gpt_score = evaluate_translation(translation=translated_text_to_evaluate,
+                                                     original_text=original_text_to_evaluate,
                                                      lang=config.langs[lang],
                                                      compute_bleu=compute_bleu)
+
         create_html(data=gpt_score, lang=config.langs[lang], file_name="report_"+str(lang)+".html")
 
         if bleu_score is not None:
