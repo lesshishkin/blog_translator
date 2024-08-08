@@ -10,7 +10,8 @@ config.blog_url = "https://get.it.com/blog/"
 #                 'es': 'Spanish'}
 config.langs = {'ru': 'Russian'}
 config.origin_lang = "English"
-config.model = "gpt-4o-2024-08-06"
+config.model_enhancer = "gpt-4o-2024-08-06"
+config.model_translator = "gpt-4o"
 
 # Список кодов языков для transliterate
 config.transliterate_languages = ['ru', 'uk', 'be', 'bg', 'mk', 'sr', 'hy', 'el']

@@ -8,15 +8,15 @@ from tools.make_report import create_html
 
 if __name__ == '__main__':
     # command line args parse
-    # parser = argparse.ArgumentParser(description='Blog posts translator')
-    # parser.add_argument('file_name', type=str, help='Path to XML file')
-    # parser.add_argument('--bleu', action='store_true', help='Compute BLEU score')
-    # args = parser.parse_args()
-    # file_name = args.file_name
-    # compute_bleu = args.bleu
+    parser = argparse.ArgumentParser(description='Blog posts translator')
+    parser.add_argument('file_name', type=str, help='Path to XML file')
+    parser.add_argument('--bleu', action='store_true', help='Compute BLEU score')
+    args = parser.parse_args()
+    file_name = args.file_name
+    compute_bleu = args.bleu
 
-    file_name = "example.xml"
-    compute_bleu = False
+    # file_name = "example.xml"
+    # compute_bleu = False
 
     original_post_data = parse_xml(file_name)
 

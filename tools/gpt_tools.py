@@ -28,7 +28,7 @@ def ask_gpt(prompt,
         # если надо получить json в ответ
         try:
             response = client.beta.chat.completions.parse(
-                model=config.model,
+                model=config.model_enhancer,
                 messages=messages,
                 response_format=response_format,
             )
@@ -39,7 +39,7 @@ def ask_gpt(prompt,
     else:
         try:
             response = client.chat.completions.create(
-                model=config.model,
+                model=config.model_translator,
                 messages=messages,
             )
             return response.choices[0].message.content

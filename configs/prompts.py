@@ -5,6 +5,11 @@ The translation must be of excellent quality, preserving the original meaning, a
 and natural in the specified language. Be attentive to word endings.
 IMPORTANT! You SHOULD NOT translate or alter the text enclosed between the symbols "^". 
 (for example ^link1^, ^link2^, ^link3^), they must remain unchanged!
+
+IMPORTANT! All tags you encounter in the text must remain in their places. Always output the text along with the tags, 
+both in the original text and in the translation. It is very important to preserve the original structure of the text. 
+Be especially careful if you encounter links and similar constructions: <a href="^link1^">...</a>. These parts must 
+remain unchanged, as missing a tag would break the program's functionality!
 """
 
 basic_translate_prompt = """
