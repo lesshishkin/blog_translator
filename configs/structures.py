@@ -12,6 +12,7 @@ class SentenceEvaluation(BaseModel):
     well_phrased: str
     errors: str
     score: int
+    enhanced_translation: str
 
 
 class TranslationEvaluation(BaseModel):

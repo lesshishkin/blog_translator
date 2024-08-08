@@ -45,6 +45,7 @@ def create_html(data, lang, file_name):
                 <th>Errors</th>
                 <th>Score</th>
                 <th>Additional Comments</th>
+                <th>Enhanced Translation</th>
             </tr>
     """.format(lang=lang, quality=data['overall_translation_quality'], explanation=data['explanation'])
 
@@ -61,6 +62,7 @@ def create_html(data, lang, file_name):
                 <td>{errors}</td>
                 <td>{score}</td>
                 <td>{additional_comments}</td>
+                <td>{enhanced_translation}</td>
             </tr>
         """.format(
             row_class=row_class,
@@ -72,7 +74,8 @@ def create_html(data, lang, file_name):
             well_phrased=sentence['well_phrased'],
             errors=sentence['errors'],
             score=sentence['score'],
-            additional_comments=sentence['additional_comments']
+            additional_comments=sentence['additional_comments'],
+            enhanced_translation=sentence['enhanced_translation']
         )
 
     html += """

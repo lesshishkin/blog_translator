@@ -1,22 +1,22 @@
 from tools.create_wxr import create_wxr
 from tools.parse_xml import parse_xml
 from configs.configs import config
-from tools.translation_tools import evaluate_translation, translate_post
+from tools.translation_tools import enhance_translation, translate_post
 import argparse
 from tools.make_report import create_html
 
 
 if __name__ == '__main__':
     # command line args parse
-    parser = argparse.ArgumentParser(description='Blog posts translator')
-    parser.add_argument('file_name', type=str, help='Path to XML file')
-    parser.add_argument('--bleu', action='store_true', help='Compute BLEU score')
-    args = parser.parse_args()
-    file_name = args.file_name
-    compute_bleu = args.bleu
+    # parser = argparse.ArgumentParser(description='Blog posts translator')
+    # parser.add_argument('file_name', type=str, help='Path to XML file')
+    # parser.add_argument('--bleu', action='store_true', help='Compute BLEU score')
+    # args = parser.parse_args()
+    # file_name = args.file_name
+    # compute_bleu = args.bleu
 
-    # file_name = "example.xml"
-    # compute_bleu = False
+    file_name = "example.xml"
+    compute_bleu = False
 
     original_post_data = parse_xml(file_name)
 
@@ -31,10 +31,10 @@ if __name__ == '__main__':
             original_post_data['content']
         ])
         translated_text_to_evaluate = '\n'.join([title, excerpt, content])
-        bleu_score, gpt_score = evaluate_translation(translation=translated_text_to_evaluate,
-                                                     original_text=original_text_to_evaluate,
-                                                     lang=config.langs[lang],
-                                                     compute_bleu=compute_bleu)
+        bleu_score, gpt_score = enhance_translation(translation=translated_text_to_evaluate,
+                                                    original_text=original_text_to_evaluate,
+                                                    lang=config.langs[lang],
+                                                    compute_bleu=compute_bleu)
 
         create_html(data=gpt_score, lang=config.langs[lang], file_name="report_"+str(lang)+".html")
 

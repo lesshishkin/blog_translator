@@ -49,7 +49,7 @@ def translate_post(post_data, language, debug=False):
     return translated_title, translated_excerpt, text_with_links, translated_slug, translated_url
 
 
-def evaluate_translation(translation, original_text, lang, compute_bleu=False):
+def enhance_translation(translation, original_text, lang, compute_bleu=False):
     if compute_bleu:
         # translate the translation back to original lang
         prompt = content_translate_prompt.format(language=config.origin_lang)
@@ -63,6 +63,7 @@ def evaluate_translation(translation, original_text, lang, compute_bleu=False):
         bleu_score = None
 
     # попросим модель сравнить два текста, дать оценку и процитировать неудачные места перевода
+    # а также улучшить!
     prompt = (evaluation_prompt.
               replace("{original_text}", original_text).
               replace('{translated_text}', translation).

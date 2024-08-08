@@ -1,5 +1,5 @@
 from easydict import EasyDict
-from prompts import content_translate_prompt, evaluation_prompt, editor_prompt
+from configs.prompts import content_translate_prompt, evaluation_prompt, editor_prompt
 from configs.structures import TranslationEvaluation
 
 config = EasyDict()
@@ -22,6 +22,7 @@ config.unidecode_languages = ['es', 'en', 'fr', 'de', 'it', 'pt', 'nl', 'sv', 'd
 config.filter_list = ["<!-- wp:paragraph -->", "<!-- /wp:paragraph -->", "<p>", "</p>"]
 
 
+# классы агентов пока не используются, это на вырост
 # Translator Agent Configuration
 config.translation_agent = EasyDict()
 config.translation_agent.model = "gpt-4o"

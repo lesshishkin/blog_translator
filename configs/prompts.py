@@ -33,9 +33,19 @@ Here are the possible ratings:
 If there is at least one mistake, inaccuracy or other imperfection of the translation, do not give the highest score. 
 Be strict and very attentive when evaluating translations. This is a very important task and we need to identify all imperfections.
 
+After you evaluate the quality of the translation and identify the deficiencies, suggest an improved version of the 
+translated sentence. It is especially important that the translation sounds natural. The quality of translations must 
+be excellent. The text should not look like a rough literal translation. You can sacrifice some accuracy for the sake 
+of naturalness. Remember, all links and tags must remain in their places without any changes!
+
 At the end, provide an overall rating for the translation based on the previous ratings for individual sentences.
 The final rating should not be higher than the lowest rating of the individual sentences. 
 Include an explanation for the given rating. 
+
+IMPORTANT! All tags you encounter in the text must remain in their places. Always output the text along with the tags, 
+both in the original text and in the translation. It is very important to preserve the original structure of the text. 
+Be especially careful if you encounter links and similar constructions: <a href="^link1^">...</a>. These parts must 
+remain unchanged, as missing a tag would break the program's functionality!
 
 Format your output as follows:
 
@@ -52,6 +62,7 @@ Format your output as follows:
       \"well_phrased\": \"Yes\",\
       \"errors\": \"None\",\
       \"score\": 5',\
+      \"enhanced_translation\": \"Der schnelle braune Fuchs springt über den faulen Hund.\",\
     },\
     {\
       \"sentence_number\": 2,\
@@ -63,10 +74,11 @@ Format your output as follows:
       \"well_phrased\": \"Yes\",\
       \"errors\": \"The translation omits the alliteration and specificity of 'seashells by the seashore.'\",\
       \"score\": 2',\
+      \"enhanced_translation\": \"Sie verkauft Muscheln an der Küste.\",\
     }\
   ],\
-  \"explanation\": \"While most sentences are accurately translated and well-phrased, some nuances and stylistic elements are occasionally lost.\"\
-  \"overall_translation_quality\": 4,\
+  \"explanation\": \"While most sentences are accurately translated and well-phrased, some some factual errors were made.\"\
+  \"overall_translation_quality\": 2,\
 }
 ```
 
