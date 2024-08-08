@@ -87,3 +87,6 @@ Language
 {language}
 ```
 """
+
+editor_prompt = """
+"""
