@@ -30,6 +30,8 @@ if __name__ == '__main__':
             original_post_data['excerpt'],
             original_post_data['content']
         ])
+
+        # экспериментально: пробуем оценить перевод и исходя из оценок и комментариев улушить качество
         translated_text_to_evaluate = '\n'.join([title, excerpt, content])
         bleu_score, gpt_score = enhance_translation(translation=translated_text_to_evaluate,
                                                     original_text=original_text_to_evaluate,
