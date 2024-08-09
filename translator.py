@@ -4,6 +4,12 @@ from configs.configs import config
 from tools.translation_tools import enhance_translation, translate_post
 import argparse
 from tools.make_report import create_html
+from dotenv import load_dotenv
+import os
+
+
+load_dotenv('.env')
+API_KEY = os.environ['GPT_API_KEY']
 
 
 if __name__ == '__main__':
@@ -23,7 +29,10 @@ if __name__ == '__main__':
     translations = []
     for lang in config.langs.keys():
         print(f'Translating to {config.langs[lang]}...')
-        title, excerpt, content, slug, link = translate_post(post_data=original_post_data, language=lang, debug=False)
+        title, excerpt, content, slug, link = translate_post(post_data=original_post_data,
+                                                             language=lang,
+                                                             api_key=API_KEY,
+                                                             debug=False)
 
         original_text_to_evaluate = '\n'.join([
             original_post_data['title'],
@@ -35,15 +44,14 @@ if __name__ == '__main__':
         translated_text_to_evaluate = '\n'.join([title, excerpt, content])
         bleu_score, gpt_score = enhance_translation(translation=translated_text_to_evaluate,
                                                     original_text=original_text_to_evaluate,
-                                                    lang=config.langs[lang],
+                                                    language=lang,
+                                                    api_key=API_KEY,
                                                     compute_bleu=compute_bleu)
 
         create_html(data=gpt_score, lang=config.langs[lang], file_name="report_"+str(lang)+".html")
 
         if bleu_score is not None:
             print('BLEU score:', bleu_score)
-        print('GPT answer: ', gpt_score)
-        print()
 
         # todo links localization
         # проблема переведнных ссылок в том, что ты не можешь быть уверен что статья получила аппрув и запощена.

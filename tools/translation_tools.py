@@ -6,24 +6,29 @@ from transliterate import translit
 import re
 from unidecode import unidecode
 from configs.structures import TranslationEvaluation
+from configs.dictionaries import dicts
 
 
-def translate_post(post_data, language, debug=False):
+def translate_post(post_data, api_key, language, debug=False):
     if 'title' not in post_data or 'content' not in post_data:
         raise KeyError('post_data должен содержать ключи "title" и "content"')
 
     # title
     prompt = basic_translate_prompt.format(language=config.langs[language])
+    if language in dicts:
+        prompt = '\n'.join([prompt, dicts[language]])
     text = post_data['title']
-    translated_title = ask_gpt(prompt, text)
+    translated_title = ask_gpt(prompt, api_key, text)
     if debug:
         print('Title translated')
 
     # excerpt
     if len(post_data['excerpt']) != 0:
         prompt = basic_translate_prompt.format(language=config.langs[language])
+        if language in dicts:
+            prompt = '\n'.join([prompt, dicts[language]])
         text = post_data['excerpt']
-        translated_excerpt = ask_gpt(prompt, text)
+        translated_excerpt = ask_gpt(prompt, api_key, text)
     else:
         translated_excerpt = ""
     if debug:
@@ -33,7 +38,9 @@ def translate_post(post_data, language, debug=False):
     # убираем ссылки перед подачей в gpt
     text_without_links, links = replace_links(post_data['content'])
     prompt = content_translate_prompt.format(language=config.langs[language])
-    translated_content = ask_gpt(prompt, text_without_links)
+    if language in dicts:
+        prompt = '\n'.join([prompt, dicts[language]])
+    translated_content = ask_gpt(prompt, api_key, text_without_links)
     # возвращаем ссылки
     text_with_links = restore_links(translated_content, links)
 
@@ -49,11 +56,11 @@ def translate_post(post_data, language, debug=False):
     return translated_title, translated_excerpt, text_with_links, translated_slug, translated_url
 
 
-def enhance_translation(translation, original_text, lang, compute_bleu=False):
+def enhance_translation(translation, original_text, language, api_key, compute_bleu=False):
     if compute_bleu:
         # translate the translation back to original lang
         prompt = content_translate_prompt.format(language=config.origin_lang)
-        double_translated_text = clean_text(ask_gpt(prompt, translation))
+        double_translated_text = clean_text(ask_gpt(prompt, api_key, translation))
         cleaned_original_text = clean_text(original_text)
 
         # calculate BLEU score
@@ -67,8 +74,10 @@ def enhance_translation(translation, original_text, lang, compute_bleu=False):
     prompt = (evaluation_prompt.
               replace("{original_text}", original_text).
               replace('{translated_text}', translation).
-              replace("{language}", lang))
-    gpt_score = ask_gpt(prompt, response_format=TranslationEvaluation)
+              replace("{language}", config.langs[language]))
+    if language in dicts:
+        prompt = '\n'.join([prompt, dicts[language]])
+    gpt_score = ask_gpt(prompt, api_key, response_format=TranslationEvaluation)
 
     return bleu_score, gpt_score
 
@@ -134,3 +143,5 @@ def restore_links(text, links_dict):
     return restored_text
 
 
+def multi_translate_content():
+    pass

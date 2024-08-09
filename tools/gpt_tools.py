@@ -1,14 +1,9 @@
 from openai import OpenAI
-from dotenv import load_dotenv
-import os
 from configs.configs import config
 
 
-load_dotenv('.env')
-API_KEY = os.environ['GPT_API_KEY']
-
-
 def ask_gpt(prompt,
+            api_key,
             text=None,
             response_format=None):
 
@@ -22,7 +17,7 @@ def ask_gpt(prompt,
             {"role": "system", "content": prompt},
         ]
 
-    client = OpenAI(api_key=API_KEY)
+    client = OpenAI(api_key=api_key)
 
     if response_format is not None:
         # если надо получить json в ответ
